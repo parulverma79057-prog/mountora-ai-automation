@@ -1,0 +1,31 @@
+name: MOUNTORA Daily Automation
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 3 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  create-plan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run MOUNTORA
+        run: python main.py
+
+      - name: Save Shorts Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: MOUNTORA-Shorts-Plan
+          path: output/shorts_plan.txt
